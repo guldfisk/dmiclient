@@ -68,8 +68,8 @@ class Forecast(object):
     def values_in_range(self, start: datetime.datetime, end: datetime.datetime) -> ForecastSlice:
         points = list(self.predictions_in_range(start, end))
         return ForecastSlice(
-            start_time = start,
-            end_time = end,
+            start_time = points[0].time_stamp,
+            end_time = points[-1].time_stamp,
             total_precipitation = sum(p.precipitation for p in points),
             average_temperature = np.mean([p.temperature for p in points]),
             precipitation_types = {p.precipitation_type for p in points},
