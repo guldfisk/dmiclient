@@ -23,7 +23,7 @@ class PredictionPoint(object):
             time_stamp = datetime.datetime.fromisoformat(remote['localTimeIso']),
             temperature = remote['temp'],
             precipitation_type = remote['precipType'],
-            precipitation = remote['prec50'],
+            precipitation = remote['prec90'],
         )
 
 
