@@ -35,6 +35,14 @@ class ForecastSlice(object):
     total_precipitation: float
     precipitation_types: t.AbstractSet[PrecipitationType]
 
+    @property
+    def duration(self) -> datetime.timedelta:
+        return self.end_time - self.start_time
+
+    @property
+    def precipitation_per_hour(self) -> float:
+        return self.total_precipitation / (self.duration / datetime.timedelta(hours = 1))
+
 
 @dataclasses.dataclass
 class Forecast(object):
@@ -55,6 +63,8 @@ class Forecast(object):
         return self.points[0].time_stamp, self.points[-1].time_stamp
 
     def predictions_in_range(self, start: datetime.datetime, end: datetime.datetime) -> t.Iterator[PredictionPoint]:
+        if start < self.points[0].time_stamp or end > self.points[-1].time_stamp:
+            raise ValueError('Slice range not within forecast range')
         on = False
         for p in self.points:
             if not on:
